@@ -11,8 +11,12 @@ public class NettyClientTest {
         client.doConnect();
         Channel channel = client.getChannel();
         Request request = new Request();
+        request.setClassName("top.fomeiherz.yako.transport.service.UserService");
         request.setRequestId(1L);
         request.setMethodName("helloService");
+        request.setArg1("小明");
+        request.setArg2("小红");
+        request.setArg3(10000);
 
         for (;;) {
             // 发送消息

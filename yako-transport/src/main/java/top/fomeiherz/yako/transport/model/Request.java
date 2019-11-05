@@ -12,6 +12,10 @@ import java.io.Serializable;
 public class Request implements Serializable {
 
     private Long requestId;
+    private String className;
     private String methodName;
+    private String arg1;
+    private String arg2;
+    private Integer arg3;
 
 }
