@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
@@ -15,6 +14,7 @@ public class Request implements Serializable {
     private Long requestId;
     private String className;
     private String methodName;
-    private List args;
+    private Object[] parameters;
+    private Class<?>[] parameterTypes;
 
 }

@@ -3,7 +3,6 @@ package top.fomeiherz.yako.transport.handler;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 import top.fomeiherz.yako.transport.model.Request;
 import top.fomeiherz.yako.transport.service.UserService;
 
@@ -20,8 +19,8 @@ public class MessageServerHandle extends ChannelDuplexHandler {
             Request request = (Request) msg;
             Class<?> _class = Class.forName(request.getClassName());
             UserService userService = (UserService) _class.newInstance();
-            Method pay = _class.getMethod("pay", String.class, String.class, Integer.class);
-            pay.invoke(userService, request.getArgs().get(0), request.getArgs().get(1), request.getArgs().get(2));
+            Method pay = _class.getMethod(request.getMethodName(), request.getParameterTypes()[0], request.getParameterTypes()[1], request.getParameterTypes()[2]);
+            pay.invoke(userService, request.getParameters()[0], request.getParameters()[1], request.getParameters()[2]);
         }
     }
 }
