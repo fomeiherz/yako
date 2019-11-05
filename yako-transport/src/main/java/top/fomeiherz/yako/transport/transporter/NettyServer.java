@@ -13,7 +13,7 @@ import top.fomeiherz.yako.transport.handler.MessageServerHandle;
 
 public class NettyServer {
 
-    public static void main(String[] args) {
+    public static void doOpen() {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
