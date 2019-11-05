@@ -21,7 +21,7 @@ public class MessageServerHandle extends ChannelDuplexHandler {
             Class<?> _class = Class.forName(request.getClassName());
             UserService userService = (UserService) _class.newInstance();
             Method pay = _class.getMethod("pay", String.class, String.class, Integer.class);
-            pay.invoke(userService, request.getArg1(), request.getArg2(), request.getArg3());
+            pay.invoke(userService, request.getArgs().get(0), request.getArgs().get(1), request.getArgs().get(2));
         }
     }
 }

@@ -4,6 +4,8 @@ package top.fomeiherz.yako.transport.transporter;
 import io.netty.channel.Channel;
 import top.fomeiherz.yako.transport.model.Request;
 
+import java.util.ArrayList;
+
 public class NettyClientTest {
 
     public static void main(String[] args) throws Exception {
@@ -14,9 +16,7 @@ public class NettyClientTest {
         request.setClassName("top.fomeiherz.yako.transport.service.UserService");
         request.setRequestId(1L);
         request.setMethodName("helloService");
-        request.setArg1("小明");
-        request.setArg2("小红");
-        request.setArg3(10000);
+        request.setArgs(new ArrayList(){{add("小明");add("小红");add(10000);}});
 
         for (;;) {
             // 发送消息
