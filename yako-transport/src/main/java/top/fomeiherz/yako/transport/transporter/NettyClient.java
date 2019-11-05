@@ -8,6 +8,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import top.fomeiherz.yako.transport.codec.KyroMsgDecoder;
+import top.fomeiherz.yako.transport.codec.KyroMsgEncoder;
 import top.fomeiherz.yako.transport.handler.MessageClientHandler;
 
 import java.util.concurrent.TimeUnit;
@@ -33,8 +35,9 @@ public class NettyClient {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
+                            p.addLast(new KyroMsgDecoder());
+                            p.addLast(new KyroMsgEncoder());
                             p.addLast(new MessageClientHandler());
-                            p.addLast(new StringEncoder());
                             p.addLast(new LoggingHandler(LogLevel.INFO));
                         }
                     });
