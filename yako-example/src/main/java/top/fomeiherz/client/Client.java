@@ -12,27 +12,32 @@ import java.io.IOException;
 import java.net.URI;
 
 /**
- * TODO
+ * 客户端
  *
  * @author fomeiherz
  * @date 2020/2/18 15:59
  */
 public class Client {
     private static final Logger logger = LoggerFactory.getLogger(Client.class);
-    
-    public static void main(String [] args) throws IOException {
+
+    public static void main(String[] args) throws IOException {
         String serviceName = HelloService.class.getCanonicalName();
         File tmpDirFile = new File(System.getProperty("java.io.tmpdir"));
         File file = new File(tmpDirFile, "simple_rpc_name_service.data");
         String name = "Master MQ";
-        try(RpcAccessPoint rpcAccessPoint = ServiceSupport.load(RpcAccessPoint.class)) {
+        // RpcAccessPoint继承Closeable，资源自动释放
+        try (RpcAccessPoint rpcAccessPoint = ServiceSupport.load(RpcAccessPoint.class)) {
+            // 根据文件的URI查找注册中心（其实就是找对应的文件）
             NameService nameService = rpcAccessPoint.getNameService(file.toURI());
             assert nameService != null;
+            // 根据服务名查找服务提供者地址uri
             URI uri = nameService.lookupService(serviceName);
             assert uri != null;
             logger.info("找到服务{}，提供者: {}.", serviceName, uri);
+            // 启动Netty + 创建代理类
             HelloService helloService = rpcAccessPoint.getRemoteService(uri, HelloService.class);
             logger.info("请求服务, name: {}...", name);
+            // 通过代理类调用服务
             String response = helloService.hello(name, "五<四>班");
             logger.info("收到响应: {}.", response);
         }

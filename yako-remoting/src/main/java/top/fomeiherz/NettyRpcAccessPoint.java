@@ -35,9 +35,15 @@ public class NettyRpcAccessPoint implements RpcAccessPoint {
     @Override
     public <T> T getRemoteService(URI uri, Class<T> serviceClass) {
         Transport transport = clientMap.computeIfAbsent(uri, this::createTransport);
+        // 创建“桩”
         return stubFactory.createStub(transport, serviceClass);
     }
 
+    /**
+     * 启动Netty客户端
+     * @param uri Netty服务端地址
+     * @return
+     */
     private Transport createTransport(URI uri) {
         try {
             return client.createTransport(new InetSocketAddress(uri.getHost(), uri.getPort()),30000L);
@@ -55,8 +61,8 @@ public class NettyRpcAccessPoint implements RpcAccessPoint {
     public synchronized Closeable startServer() throws Exception {
         if (null == server) {
             server = ServiceSupport.load(TransportServer.class);
+            // 启动Netty服务
             server.start(RequestHandlerRegistry.INSTANCE, port);
-
         }
         return () -> {
             if(null != server) {

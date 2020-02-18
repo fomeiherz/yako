@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * TODO
+ * 把本地文件作为注册中心。提供服务注册，服务发现。
  *
  * @author fomeiherz
  * @date 2020/2/18 16:07
@@ -59,7 +59,6 @@ public class LocalFileNameService implements NameService {
                     while (buffer.hasRemaining()) {
                         fileChannel.read(buffer);
                     }
-
                     metadata = SerializeSupport.parse(bytes);
                 } else {
                     metadata = new Metadata();
