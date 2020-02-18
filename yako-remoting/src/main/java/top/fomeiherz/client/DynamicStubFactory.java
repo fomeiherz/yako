@@ -3,6 +3,7 @@ package top.fomeiherz.client;
 import com.itranswarp.compiler.JavaStringCompiler;
 import top.fomeiherz.transport.Transport;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -13,30 +14,13 @@ import java.util.Map;
  */
 public class DynamicStubFactory implements StubFactory {
 
+    private static String prefix = "package top.fomeiherz.client.stubs;" +
+            "import top.fomeiherz.serialize.SerializeSupport;" +
+            "public class %s extends AbstractStub implements %s {";
 
-    // TODO 支持多个方法
-    private final static String STUB_SOURCE_TEMPLATE =
-            "package top.fomeiherz.client.stubs;\n" +
-                    "import top.fomeiherz.serialize.SerializeSupport;\n" +
-                    "import java.util.*;\n" +
-                    "public class %s extends AbstractStub implements %s {\n" +
-                    "    @Override\n" +
-                    "    public String %s(String arg1, String arg2) {\n" +
-                    "        List<Class<?>> cls = new ArrayList<>();\n" +
-                    "        cls.add(arg1.getClass());\n" +
-                    "        cls.add(arg2.getClass());\n" +
-                    "        return SerializeSupport.parse(\n" +
-                    "                invokeRemote(\n" +
-                    "                        new top.fomeiherz.model.RpcRequest(\n" +
-                    "                                \"%s\",\n" +
-                    "                                \"%s\",\n" +
-                    "                                new Object[]{arg1, arg2},\n" +
-                    "                                cls\n" +
-                    "                        )\n" +
-                    "                )\n" +
-                    "        );\n" +
-                    "    }\n" +
-                    "}";
+    private final static String STRING = "}}";
+
+    private final static String ARG_PREFIX = "arg";
 
     @Override
     public <T> T createStub(Transport transport, Class<T> serviceClass) {
@@ -45,10 +29,48 @@ public class DynamicStubFactory implements StubFactory {
             String stubSimpleName = serviceClass.getSimpleName() + "Stub";
             String classFullName = serviceClass.getName();
             String stubFullName = "top.fomeiherz.client.stubs." + stubSimpleName;
-            // TODO 多个方法名和参数，有重载方法的情况
-            String methodName = serviceClass.getMethods()[0].getName();
-            // TODO 动态生成source
-            String source = String.format(STUB_SOURCE_TEMPLATE, stubSimpleName, classFullName, methodName, classFullName, methodName);
+            StringBuilder proxyMethods = new StringBuilder();
+            // 多个方法名和参数，有重载方法的情况
+            for (Method method : serviceClass.getMethods()) {
+                StringBuilder args = new StringBuilder("new Object[]{");
+                String methodName = method.getName();
+                proxyMethods.append("@Override ");
+                proxyMethods.append("public")
+                        .append(" ").append(method.getReturnType().getName())
+                        .append(" ").append(methodName).append("(");
+                for (int i = 0; i < method.getParameterCount(); i++) {
+                    Class<?> parameterType = method.getParameterTypes()[i];
+                    proxyMethods.append(parameterType.getName())
+                            .append(" ")
+                            .append(ARG_PREFIX)
+                            .append(i);
+                    args.append(ARG_PREFIX).append(i);
+                    if (i != method.getParameterCount() - 1) {
+                        proxyMethods.append(", ");
+                        args.append(", ");
+                    }
+                }
+                proxyMethods.append(") {");
+                proxyMethods.append("Class<?>[] cls = new Class<?>[")
+                        .append(method.getParameterCount()).append("];");
+                for (int i = 0; i < method.getParameterCount(); i++) {
+                    proxyMethods.append("cls[").append(i).append("]").append("=").append(ARG_PREFIX).append(i).append(".getClass();");
+                }
+                proxyMethods.append("return SerializeSupport.parse(");
+                proxyMethods.append("invokeRemote(");
+                proxyMethods.append("new top.fomeiherz.model.RpcRequest(");
+                proxyMethods.append("\"").append(classFullName).append("\"").append(",");
+                proxyMethods.append("\"").append(methodName).append("\"").append(",");
+                // 参数
+                args.append("},");
+                proxyMethods.append(args);
+                proxyMethods.append("cls,");
+                proxyMethods.append(method.getReturnType().getName()).append(".class");
+                proxyMethods.append(")").append(")").append(");");
+            }
+            // 动态生成source
+            prefix = String.format(prefix, stubSimpleName, classFullName);
+            String source = prefix + proxyMethods + STRING;
 
             // 编译源代码
             JavaStringCompiler compiler = new JavaStringCompiler();

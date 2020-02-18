@@ -26,8 +26,10 @@ public class Server {
         File file = new File(tmpDirFile, "simple_rpc_name_service.data");
         HelloService helloService = new HelloServiceImpl();
         logger.info("创建并启动RpcAccessPoint...");
-        // 启动Netty服务
-        try (RpcAccessPoint rpcAccessPoint = ServiceSupport.load(RpcAccessPoint.class); Closeable ignored = rpcAccessPoint.startServer()) {
+        try (RpcAccessPoint rpcAccessPoint = ServiceSupport.load(RpcAccessPoint.class);
+             // 启动Netty服务
+             Closeable ignored = rpcAccessPoint.startServer()
+        ) {
             // 连接注册中心
             NameService nameService = rpcAccessPoint.getNameService(file.toURI());
             assert nameService != null;
