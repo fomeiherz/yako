@@ -14,6 +14,7 @@ import top.fomeiherz.transport.command.ResponseHeader;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,11 +36,12 @@ public class RpcRequestHandler implements RequestHandler, ServiceProviderRegistr
         try {
             // 查找所有已注册的服务提供方，寻找rpcRequest中需要的服务
             Object serviceProvider = serviceProviders.get(rpcRequest.getInterfaceName());
-            if(serviceProvider != null) {
+            if (serviceProvider != null) {
                 // 找到服务提供者，利用Java反射机制调用服务的对应方法
-                String arg = SerializeSupport.parse(rpcRequest.getSerializedArguments());
-                Method method = serviceProvider.getClass().getMethod(rpcRequest.getMethodName(), String.class);
-                String result = (String ) method.invoke(serviceProvider, arg);
+                Object[] args = rpcRequest.getArguments();
+                List<Class<?>> types = rpcRequest.getArgumentTypes();
+                Method method = serviceProvider.getClass().getMethod(rpcRequest.getMethodName(), types.toArray(new Class<?>[]{}));
+                String result = (String) method.invoke(serviceProvider, args);
                 // 把结果封装成响应命令并返回
                 return new Command(new ResponseHeader(type(), header.getVersion(), header.getRequestId()), SerializeSupport.serialize(result));
             }

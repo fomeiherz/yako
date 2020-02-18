@@ -7,5 +7,5 @@ package top.fomeiherz.api;
  * @date 2020/2/18 15:59
  */
 public interface HelloService {
-    String hello(String name);
+    String hello(String name, String cl);
 }

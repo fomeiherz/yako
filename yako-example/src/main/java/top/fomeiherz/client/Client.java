@@ -33,7 +33,7 @@ public class Client {
             logger.info("找到服务{}，提供者: {}.", serviceName, uri);
             HelloService helloService = rpcAccessPoint.getRemoteService(uri, HelloService.class);
             logger.info("请求服务, name: {}...", name);
-            String response = helloService.hello(name);
+            String response = helloService.hello(name, "五<四>班");
             logger.info("收到响应: {}.", response);
         }
     }

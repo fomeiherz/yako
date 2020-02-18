@@ -14,9 +14,9 @@ public class HelloServiceImpl implements HelloService {
     private static final Logger logger = LoggerFactory.getLogger(HelloServiceImpl.class);
 
     @Override
-    public String hello(String name) {
+    public String hello(String name, String cl) {
         logger.info("HelloServiceImpl收到: {}.", name);
-        String ret = "Hello, " + name;
+        String ret = "Hello, " + name + "," + cl;
         logger.info("HelloServiceImpl返回: {}.", ret);
         return ret;
     }

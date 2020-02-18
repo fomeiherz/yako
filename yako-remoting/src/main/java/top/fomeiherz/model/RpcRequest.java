@@ -13,6 +13,8 @@
  */
 package top.fomeiherz.model;
 
+import java.util.List;
+
 /**
  * RpcRequest实体类
  *
@@ -22,12 +24,14 @@ package top.fomeiherz.model;
 public class RpcRequest {
     private final String interfaceName;
     private final String methodName;
-    private final byte[] serializedArguments;
+    private final Object[] arguments;
+    private final List<Class<?>> argumentTypes;
 
-    public RpcRequest(String interfaceName, String methodName, byte[] serializedArguments) {
+    public RpcRequest(String interfaceName, String methodName, Object[] arguments, List<Class<?>> argumentTypes) {
         this.interfaceName = interfaceName;
         this.methodName = methodName;
-        this.serializedArguments = serializedArguments;
+        this.arguments = arguments;
+        this.argumentTypes = argumentTypes;
     }
 
     public String getInterfaceName() {
@@ -38,7 +42,11 @@ public class RpcRequest {
         return methodName;
     }
 
-    public byte[] getSerializedArguments() {
-        return serializedArguments;
+    public Object[] getArguments() {
+        return arguments;
+    }
+
+    public List<Class<?>> getArgumentTypes() {
+        return argumentTypes;
     }
 }
