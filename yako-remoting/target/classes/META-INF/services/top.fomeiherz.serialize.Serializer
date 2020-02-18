@@ -1,0 +1,6 @@
+#top.fomeiherz.serialize.byt.MetadataSerializer
+top.fomeiherz.serialize.fastjson.MetadataSerializer
+#top.fomeiherz.serialize.byt.StringSerializer
+top.fomeiherz.serialize.fastjson.StringSerializer
+#top.fomeiherz.serialize.byt.RpcRequestSerializer
+top.fomeiherz.serialize.fastjson.RpcRequestSerializer
