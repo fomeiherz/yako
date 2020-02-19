@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * StubFactory默认实现类
+ * 创建代理类（桩）的工具。代理类中负责解析返回数据。
  *
  * @author fomeiherz
  * @date 2020/2/18 10:25

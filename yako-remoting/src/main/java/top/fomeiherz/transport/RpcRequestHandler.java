@@ -14,11 +14,10 @@ import top.fomeiherz.transport.command.ResponseHeader;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * TODO
+ * 接收客户端请求，反射调用对应的方法
  *
  * @author fomeiherz
  * @date 2020/2/18 16:10
@@ -43,6 +42,7 @@ public class RpcRequestHandler implements RequestHandler, ServiceProviderRegistr
                 Method method = serviceProvider.getClass().getMethod(rpcRequest.getMethodName(), types);
                 // 返回类型
                 Class<?> returnType = rpcRequest.getReturnType();
+                // TODO 如何解析成对应的返回类型呢？
                 Object result = returnType.cast(method.invoke(serviceProvider, args));
                 // 把结果封装成响应命令并返回
                 return new Command(new ResponseHeader(type(), header.getVersion(), header.getRequestId()), SerializeSupport.serialize(result));
