@@ -1,1 +1,2 @@
-top.fomeiherz.namesrv.LocalFileNameService
+top.fomeiherz.namesrv.file.LocalFileNameService
+top.fomeiherz.namesrv.jdbc.JdbcNameService
