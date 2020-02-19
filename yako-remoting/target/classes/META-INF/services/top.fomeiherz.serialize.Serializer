@@ -4,3 +4,4 @@ top.fomeiherz.serialize.fastjson.MetadataSerializer
 top.fomeiherz.serialize.fastjson.StringSerializer
 #top.fomeiherz.serialize.byt.RpcRequestSerializer
 top.fomeiherz.serialize.fastjson.RpcRequestSerializer
+top.fomeiherz.serialize.fastjson.IntegerSerializer

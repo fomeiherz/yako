@@ -37,9 +37,13 @@ public class Client {
             // 启动Netty + 创建代理类
             HelloService helloService = rpcAccessPoint.getRemoteService(uri, HelloService.class);
             logger.info("请求服务, name: {}...", name);
+            String response1 = helloService.hello("李雷");
+            logger.info("收到响应: {}.", response1);
             // 通过代理类调用服务
             String response = helloService.hello(name, "五<四>班");
             logger.info("收到响应: {}.", response);
+            Integer result = helloService.calc(10, 11);
+            logger.info("计算结果：" + result);
         }
     }
 }

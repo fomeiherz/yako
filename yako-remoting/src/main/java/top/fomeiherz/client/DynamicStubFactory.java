@@ -14,11 +14,11 @@ import java.util.Map;
  */
 public class DynamicStubFactory implements StubFactory {
 
-    private static String prefix = "package top.fomeiherz.client.stubs;" +
-            "import top.fomeiherz.serialize.SerializeSupport;" +
-            "public class %s extends AbstractStub implements %s {";
+    private static String prefix = "package top.fomeiherz.client.stubs;\n" +
+            "import top.fomeiherz.serialize.SerializeSupport;\n" +
+            "public class %s extends AbstractStub implements %s {\n";
 
-    private final static String STRING = "}}";
+    private final static String STRING = "}";
 
     private final static String ARG_PREFIX = "arg";
 
@@ -34,7 +34,7 @@ public class DynamicStubFactory implements StubFactory {
             for (Method method : serviceClass.getMethods()) {
                 StringBuilder args = new StringBuilder("new Object[]{");
                 String methodName = method.getName();
-                proxyMethods.append("@Override ");
+                proxyMethods.append("@Override \n");
                 proxyMethods.append("public")
                         .append(" ").append(method.getReturnType().getName())
                         .append(" ").append(methodName).append("(");
@@ -50,7 +50,7 @@ public class DynamicStubFactory implements StubFactory {
                         args.append(", ");
                     }
                 }
-                proxyMethods.append(") {");
+                proxyMethods.append(") {\n");
                 proxyMethods.append("Class<?>[] cls = new Class<?>[")
                         .append(method.getParameterCount()).append("];");
                 for (int i = 0; i < method.getParameterCount(); i++) {
@@ -67,6 +67,7 @@ public class DynamicStubFactory implements StubFactory {
                 proxyMethods.append("cls,");
                 proxyMethods.append(method.getReturnType().getName()).append(".class");
                 proxyMethods.append(")").append(")").append(");");
+                proxyMethods.append("}\n");
             }
             // 动态生成source
             prefix = String.format(prefix, stubSimpleName, classFullName);
