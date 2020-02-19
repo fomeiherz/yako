@@ -11,7 +11,7 @@ import top.fomeiherz.transport.RequestHandlerRegistry;
 import top.fomeiherz.transport.command.Command;
 
 /**
- * TODO
+ * 服务端接收到请求后，进行处理Handler
  *
  * @author fomeiherz
  * @date 2020/2/18 15:51
