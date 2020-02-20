@@ -41,9 +41,7 @@ public class RpcRequestHandler implements RequestHandler, ServiceProviderRegistr
                 Class<?>[] types = rpcRequest.getArgumentTypes();
                 Method method = serviceProvider.getClass().getMethod(rpcRequest.getMethodName(), types);
                 // 返回类型
-                Class<?> returnType = rpcRequest.getReturnType();
-                // TODO 如何解析成对应的返回类型呢？
-                Object result = returnType.cast(method.invoke(serviceProvider, args));
+                Object result = method.invoke(serviceProvider, args);
                 // 把结果封装成响应命令并返回
                 return new Command(new ResponseHeader(type(), header.getVersion(), header.getRequestId()), SerializeSupport.serialize(result));
             }

@@ -64,8 +64,7 @@ public class DynamicStubFactory implements StubFactory {
                 // 参数
                 args.append("},");
                 proxyMethods.append(args);
-                proxyMethods.append("cls,");
-                proxyMethods.append(method.getReturnType().getName()).append(".class");
+                proxyMethods.append("cls");
                 proxyMethods.append(")").append(")").append(");");
                 proxyMethods.append("}\n");
             }

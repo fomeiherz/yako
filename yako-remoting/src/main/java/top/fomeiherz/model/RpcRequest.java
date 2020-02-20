@@ -24,14 +24,12 @@ public class RpcRequest {
     private final String methodName;
     private final Object[] arguments;
     private final Class<?>[] argumentTypes;
-    private final Class<?> returnType;
 
-    public RpcRequest(String interfaceName, String methodName, Object[] arguments, Class<?>[] argumentTypes, Class<?> returnType) {
+    public RpcRequest(String interfaceName, String methodName, Object[] arguments, Class<?>[] argumentTypes) {
         this.interfaceName = interfaceName;
         this.methodName = methodName;
         this.arguments = arguments;
         this.argumentTypes = argumentTypes;
-        this.returnType = returnType;
     }
 
     public String getInterfaceName() {
@@ -48,9 +46,5 @@ public class RpcRequest {
 
     public Class<?>[] getArgumentTypes() {
         return argumentTypes;
-    }
-
-    public Class<?> getReturnType() {
-        return returnType;
     }
 }
