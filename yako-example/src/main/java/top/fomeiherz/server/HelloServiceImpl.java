@@ -26,8 +26,8 @@ public class HelloServiceImpl implements HelloService {
         return ret;
     }
 
-    @Override
-    public Integer calc(Integer num1, Integer num2) {
-        return num1 + num2;
-    }
+    //@Override
+    //public Integer calc(Integer num1, Integer num2) {
+    //    return num1 + num2;
+    //}
 }

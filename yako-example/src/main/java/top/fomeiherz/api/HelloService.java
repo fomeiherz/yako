@@ -28,5 +28,5 @@ public interface HelloService {
      * @param num2
      * @return
      */
-    Integer calc(Integer num1, Integer num2);
+    //Integer calc(Integer num1, Integer num2);
 }

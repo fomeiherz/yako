@@ -39,8 +39,8 @@ public class ClientWithJdbc {
             // 通过代理类调用服务
             String response = helloService.hello(name, "五<四>班");
             logger.info("收到响应: {}.", response);
-            Integer result = helloService.calc(10, 11);
-            logger.info("计算结果：" + result);
+            //Integer result = helloService.calc(10, 11);
+            //logger.info("计算结果：" + result);
         }
     }
 }
